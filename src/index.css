@@ -1,0 +1,43 @@
+main {
+  position: relative;
+  width: calc(100vmin - 45vmin);
+  height: calc(100vmin - 45vmin);
+  display: flex;
+  flex-wrap: wrap;
+}
+section {
+  flex: 0 0 20%;
+  min-height: 20%;
+  border: 1px solid #fff;
+  background-color: #eaedee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+  margin: 0;
+  font-family: sans-serif;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+img,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
