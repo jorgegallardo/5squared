@@ -8,6 +8,7 @@ const App = () => {
   const [timeLeft, setTimeLeft] = useState(20);
   const [gameInSession, setGameInSession] = useState(false);
   const [gamePlayed, setGamePlayed] = useState(false);
+  const [guesses, setGuesses] = useState(new Array(25).fill(undefined));
 
   const randomNumberGenerator = () => {
     const num = Math.floor(Math.random() * 10);
@@ -26,6 +27,9 @@ const App = () => {
     prepareGame();
   }, []);
 
+  const blockInvalidCharacters = (e) =>
+    ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
+
   const timer = (time, update, complete) => {
     var start = new Date().getTime();
     var interval = setInterval(() => {
@@ -42,7 +46,7 @@ const App = () => {
     setGameInSession(true);
     setShowNumbers(true);
     timer(
-      1000, // in ms
+      100, // in ms
       (timeLeft) => {
         setTimeLeft(timeLeft);
       },
@@ -94,12 +98,24 @@ const App = () => {
         {/* in game: guessing time */}
         {!showNumbers &&
           gamePlayed &&
-          randomNumbers.map((num, index) => (
+          guesses.map((num, index) => (
             <section key={index}>
               <input
+                id={index}
                 type="number"
+                maxLength={1}
+                onKeyDown={blockInvalidCharacters}
                 className={'input-box'}
                 autoFocus={index === 0}
+                onChange={(event) => {
+                  let guess = +event.target.value;
+                  console.log('guess: ' + guess);
+                  if (typeof guess !== 'number') return;
+                  let copyOfGuesses = [...guesses];
+                  copyOfGuesses[index] = guess;
+                  setGuesses(copyOfGuesses);
+                  if (index < 24) document.getElementById(index + 1).focus();
+                }}
               ></input>
             </section>
           ))}
