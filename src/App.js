@@ -102,8 +102,8 @@ const App = () => {
             <section key={index}>
               <input
                 id={index}
-                type="number"
-                maxLength={1}
+                type="text"
+                maxLength="1"
                 onKeyDown={blockInvalidCharacters}
                 className={'input-box'}
                 autoFocus={index === 0}
