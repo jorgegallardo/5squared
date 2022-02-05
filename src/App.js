@@ -101,7 +101,7 @@ const App = () => {
           guesses.map((num, index) => (
             <section key={index}>
               <input
-                id={index}
+                id={`box${index}`}
                 type="text"
                 maxLength="1"
                 onKeyDown={blockInvalidCharacters}
@@ -114,7 +114,10 @@ const App = () => {
                   let copyOfGuesses = [...guesses];
                   copyOfGuesses[index] = guess;
                   setGuesses(copyOfGuesses);
-                  if (index < 24) document.getElementById(index + 1).focus();
+                  if (index < 24)
+                    document.getElementById(`box${index + 1}`).focus();
+                  if (index === 24)
+                    document.getElementById(`box${index}`).blur();
                 }}
               ></input>
             </section>
