@@ -3,12 +3,11 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import Button from 'react-bootstrap/Button';
 
 const App = () => {
-  const [randomNumbers, setRandomNumbers] = useState([]);
+  const [numbers, setNumbers] = useState([]);
   const [showNumbers, setShowNumbers] = useState(false);
   const [timeLeft, setTimeLeft] = useState(20);
   const [gameInSession, setGameInSession] = useState(false);
   const [gamePlayed, setGamePlayed] = useState(false);
-  const [guesses, setGuesses] = useState(new Array(25).fill(undefined));
 
   const randomNumberGenerator = () => {
     const num = Math.floor(Math.random() * 10);
@@ -16,19 +15,22 @@ const App = () => {
   };
 
   const prepareGame = () => {
-    let nums = [];
+    const nums = [];
     for (let i = 0; i < 25; i++) {
-      nums.push(randomNumberGenerator());
+      let randNum = randomNumberGenerator();
+      nums.push({ answer: randNum, guess: undefined });
     }
-    setRandomNumbers(nums);
+    setNumbers(nums);
   };
 
   useEffect(() => {
     prepareGame();
   }, []);
 
-  const blockInvalidCharacters = (e) =>
-    ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
+  const blockInvalidCharacters = (e) => {
+    return isNaN(e.key) && e.preventDefault();
+    //return ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
+  };
 
   const timer = (time, update, complete) => {
     var start = new Date().getTime();
@@ -56,6 +58,15 @@ const App = () => {
         setGamePlayed(true);
       }
     );
+  };
+
+  const handleGuess = (event, index) => {
+    let guess = +event.target.value;
+    let numbersCopy = [...numbers];
+    numbersCopy[index].guess = guess;
+    setNumbers(numbersCopy);
+    if (index < 24) document.getElementById(`box${index + 1}`).focus();
+    if (index === 24) document.getElementById(`box${index}`).blur();
   };
 
   return (
@@ -87,18 +98,18 @@ const App = () => {
         {/* default grid */}
         {!showNumbers &&
           !gamePlayed &&
-          randomNumbers.map((num, index) => <section key={index}></section>)}
+          numbers.map((num, index) => <section key={index}></section>)}
 
         {/* in game: numbers showing */}
         {showNumbers &&
-          randomNumbers.map((num, index) => (
-            <section key={index}>{num}</section>
+          numbers.map((num, index) => (
+            <section key={index}>{num.answer}</section>
           ))}
 
         {/* in game: guessing time */}
         {!showNumbers &&
           gamePlayed &&
-          guesses.map((num, index) => (
+          numbers.map((num, index) => (
             <section key={index}>
               <input
                 id={`box${index}`}
@@ -107,18 +118,7 @@ const App = () => {
                 onKeyDown={blockInvalidCharacters}
                 className={'input-box'}
                 autoFocus={index === 0}
-                onChange={(event) => {
-                  let guess = +event.target.value;
-                  console.log('guess: ' + guess);
-                  if (typeof guess !== 'number') return;
-                  let copyOfGuesses = [...guesses];
-                  copyOfGuesses[index] = guess;
-                  setGuesses(copyOfGuesses);
-                  if (index < 24)
-                    document.getElementById(`box${index + 1}`).focus();
-                  if (index === 24)
-                    document.getElementById(`box${index}`).blur();
-                }}
+                onChange={(event) => handleGuess(event, index)}
               ></input>
             </section>
           ))}
