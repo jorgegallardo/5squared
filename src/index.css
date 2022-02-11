@@ -15,9 +15,6 @@ section {
   justify-content: center;
   font-size: 3rem;
 }
-section .default {
-  background-color: #eaedee;
-}
 section.correct-box {
   background-color: rgb(100, 200, 100);
 }

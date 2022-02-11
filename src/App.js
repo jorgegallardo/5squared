@@ -108,16 +108,12 @@ const App = () => {
         {/* default grid */}
         {!showNumbers &&
           !gamePlayed &&
-          numbers.map((num, index) => (
-            <section key={index} className={'default'}></section>
-          ))}
+          numbers.map((num, index) => <section key={index}></section>)}
 
         {/* in game: numbers showing */}
         {showNumbers &&
           numbers.map((num, index) => (
-            <section key={index} className={'default'}>
-              {num.answer}
-            </section>
+            <section key={index}>{num.answer}</section>
           ))}
 
         {/* in game: guessing time */}
@@ -125,7 +121,7 @@ const App = () => {
           gamePlayed &&
           !allBoxesContainGuess &&
           numbers.map((num, index) => (
-            <section key={index} className={'default'}>
+            <section key={index}>
               <input
                 id={`box${index}`}
                 type="text"
