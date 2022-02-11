@@ -68,22 +68,24 @@ const App = () => {
     setNumbers(numbersCopy);
     if (index < 24) document.getElementById(`box${index + 1}`).focus();
     if (index === 24) document.getElementById(`box${index}`).blur();
+    // check that all boxes are filled. if not, return.
     for (let i = 0; i < 25; i++) {
-      if (numbers[i].guess === null) {
+      if (numbersCopy[i].guess === null) {
         console.log('not done');
         return;
       }
-      setAllBoxesContainGuess(true);
     }
+    // all boxes contain a guess
+    setAllBoxesContainGuess(true);
   };
 
   const checkAnswers = () => {
-    // check that all slots have been filled
     for (let i = 0; i < 25; i++) {
-      if (numbers[i].guess === null) {
-        console.log('not done');
-        return;
-      }
+      // we shouldn't ever have a guess be null, as the project disables the check answers button (and function) until every box has a value
+      // if (numbers[i].guess === null) {
+      //   console.log('not done');
+      //   return;
+      // }
       if (numbers[i].answer === numbers[i].guess) {
         numbers[i].match = true;
       }
