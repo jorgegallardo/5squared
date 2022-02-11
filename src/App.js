@@ -77,15 +77,11 @@ const App = () => {
     }
     // all boxes contain a guess
     setAllBoxesContainGuess(true);
+    checkAnswers();
   };
 
   const checkAnswers = () => {
     for (let i = 0; i < 25; i++) {
-      // we shouldn't ever have a guess be null, as the project disables the check answers button (and function) until every box has a value
-      // if (numbers[i].guess === null) {
-      //   console.log('not done');
-      //   return;
-      // }
       if (numbers[i].answer === numbers[i].guess) {
         numbers[i].match = true;
       }
@@ -97,32 +93,7 @@ const App = () => {
     <>
       <div>
         <h1 className={'float-start'}>5squared</h1>
-        {/* for debugging */}
-        {/* {gamePlayed && (
-          <Button
-            className={'float-end'}
-            variant={!showNumbers ? 'outline-success' : 'outline-danger'}
-            onClick={() => setShowNumbers(!showNumbers)}
-            hidden={gameInSession}
-            style={{ marginLeft: '5px' }}
-          >
-            {showNumbers ? 'hide numbers' : 'show numbers'}
-          </Button>
-        )} */}
 
-        {/* game over, check answers */}
-        {gamePlayed && (
-          <Button
-            className={'float-end'}
-            variant={'outline-dark'}
-            onClick={checkAnswers}
-            disabled={!allBoxesContainGuess}
-            hidden={gameInSession}
-            style={{ marginLeft: '5px' }}
-          >
-            {showNumbers ? '' : 'check answers'}
-          </Button>
-        )}
         <Button
           className={'float-end'}
           variant="outline-dark"
