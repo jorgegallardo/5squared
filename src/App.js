@@ -8,6 +8,7 @@ const App = () => {
   const [timeLeft, setTimeLeft] = useState(20);
   const [gameInSession, setGameInSession] = useState(false);
   const [gamePlayed, setGamePlayed] = useState(false);
+  const [allBoxesContainGuess, setAllBoxesContainGuess] = useState(false);
 
   const randomNumberGenerator = () => {
     const num = Math.floor(Math.random() * 10);
@@ -18,7 +19,7 @@ const App = () => {
     const nums = [];
     for (let i = 0; i < 25; i++) {
       let randNum = randomNumberGenerator();
-      nums.push({ answer: randNum, guess: undefined });
+      nums.push({ answer: randNum, guess: null, match: null });
     }
     setNumbers(nums);
   };
@@ -67,13 +68,35 @@ const App = () => {
     setNumbers(numbersCopy);
     if (index < 24) document.getElementById(`box${index + 1}`).focus();
     if (index === 24) document.getElementById(`box${index}`).blur();
+    for (let i = 0; i < 25; i++) {
+      if (numbers[i].guess === null) {
+        console.log('not done');
+        return;
+      }
+      setAllBoxesContainGuess(true);
+    }
+  };
+
+  const checkAnswers = () => {
+    // check that all slots have been filled
+    for (let i = 0; i < 25; i++) {
+      if (numbers[i].guess === null) {
+        console.log('not done');
+        return;
+      }
+      if (numbers[i].answer === numbers[i].guess) {
+        numbers[i].match = true;
+      }
+    }
+    console.log(numbers); // for debugging
   };
 
   return (
     <>
       <div>
         <h1 className={'float-start'}>5squared</h1>
-        {gamePlayed && (
+        {/* for debugging */}
+        {/* {gamePlayed && (
           <Button
             className={'float-end'}
             variant={!showNumbers ? 'outline-success' : 'outline-danger'}
@@ -82,6 +105,20 @@ const App = () => {
             style={{ marginLeft: '5px' }}
           >
             {showNumbers ? 'hide numbers' : 'show numbers'}
+          </Button>
+        )} */}
+
+        {/* game over, check answers */}
+        {gamePlayed && (
+          <Button
+            className={'float-end'}
+            variant={'outline-dark'}
+            onClick={checkAnswers}
+            disabled={!allBoxesContainGuess}
+            hidden={gameInSession}
+            style={{ marginLeft: '5px' }}
+          >
+            {showNumbers ? '' : 'check answers'}
           </Button>
         )}
         <Button
