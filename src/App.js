@@ -46,10 +46,11 @@ const App = () => {
 
   const handleStartGame = () => {
     if (gamePlayed) prepareGame();
+    setAllBoxesContainGuess(false);
     setGameInSession(true);
     setShowNumbers(true);
     timer(
-      100, // in ms
+      20000, // in ms
       (timeLeft) => {
         setTimeLeft(timeLeft);
       },
@@ -71,7 +72,6 @@ const App = () => {
     // check that all boxes are filled. if not, return.
     for (let i = 0; i < 25; i++) {
       if (numbersCopy[i].guess === null) {
-        console.log('not done');
         return;
       }
     }
@@ -108,19 +108,24 @@ const App = () => {
         {/* default grid */}
         {!showNumbers &&
           !gamePlayed &&
-          numbers.map((num, index) => <section key={index}></section>)}
+          numbers.map((num, index) => (
+            <section key={index} className={'default'}></section>
+          ))}
 
         {/* in game: numbers showing */}
         {showNumbers &&
           numbers.map((num, index) => (
-            <section key={index}>{num.answer}</section>
+            <section key={index} className={'default'}>
+              {num.answer}
+            </section>
           ))}
 
         {/* in game: guessing time */}
         {!showNumbers &&
           gamePlayed &&
+          !allBoxesContainGuess &&
           numbers.map((num, index) => (
-            <section key={index}>
+            <section key={index} className={'default'}>
               <input
                 id={`box${index}`}
                 type="text"
@@ -129,6 +134,25 @@ const App = () => {
                 className={'input-box'}
                 autoFocus={index === 0}
                 onChange={(event) => handleGuess(event, index)}
+              ></input>
+            </section>
+          ))}
+
+        {/* game over: results */}
+        {!showNumbers &&
+          gamePlayed &&
+          allBoxesContainGuess &&
+          numbers.map((num, index) => (
+            <section
+              key={index}
+              className={numbers[index].match ? 'correct-box' : 'incorrect-box'}
+            >
+              <input
+                id={`box${index}`}
+                type="text"
+                className={'input-box'}
+                value={numbers[index].guess}
+                readOnly
               ></input>
             </section>
           ))}
