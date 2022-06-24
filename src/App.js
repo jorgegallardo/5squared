@@ -26,6 +26,7 @@ const App = () => {
 
   useEffect(() => {
     prepareGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const blockInvalidCharacters = (e) => {
@@ -96,7 +97,7 @@ const App = () => {
 
         <Button
           className={'float-end'}
-          variant="outline-dark"
+          variant='outline-dark'
           onClick={handleStartGame}
           hidden={gameInSession}
         >
@@ -124,8 +125,8 @@ const App = () => {
             <section key={index}>
               <input
                 id={`box${index}`}
-                type="text"
-                maxLength="1"
+                type='text'
+                maxLength='1'
                 onKeyDown={blockInvalidCharacters}
                 className={'input-box'}
                 autoFocus={index === 0}
@@ -145,7 +146,7 @@ const App = () => {
             >
               <input
                 id={`box${index}`}
-                type="text"
+                type='text'
                 className={'input-box'}
                 value={numbers[index].guess}
                 readOnly
@@ -156,7 +157,7 @@ const App = () => {
       <ProgressBar
         max={20}
         now={timeLeft}
-        variant="dark"
+        variant='dark'
         style={{ borderRadius: 0, border: '1px solid #fff', height: '15px' }}
       />
     </>
